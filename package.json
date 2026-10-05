@@ -1,0 +1,27 @@
+{
+  "name": "etf-oracle",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@etf-oracle/dashboard & npm run dev --workspace=@etf-oracle/api",
+    "dev:dashboard": "npm run dev --workspace=@etf-oracle/dashboard",
+    "clean:dashboard": "node -e \"require('fs').rmSync('apps/dashboard/.next',{recursive:true,force:true})\"",
+    "dev:fresh": "npm run clean:dashboard && npm run dev:dashboard",
+    "dev:api": "npm run dev --workspace=@etf-oracle/api",
+    "dev:quant": "cd services/quant && .venv\\Scripts\\python -m uvicorn app.main:app --reload --port 8000",
+    "docker:up": "docker compose -f infra/docker-compose.yml up -d",
+    "docker:down": "docker compose -f infra/docker-compose.yml down",
+    "db:migrate": "node infra/scripts/migrate.js",
+    "pipeline:fred": "services\\quant\\.venv\\Scripts\\python pipelines/fred_poc.py",
+    "pipeline:nport": "python pipelines/nport_poc.py"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "pg": "^8.13.1"
+  }
+}
